@@ -156,7 +156,7 @@ def library_check(directory: Path):
 @cli.command(name="governance-init")
 @click.argument("directory", type=click.Path(exists=True, file_okay=False, path_type=Path))
 def governance_init(directory: Path):
-    """Report skills missing v0.1.1 governance fields + suggest defaults."""
+    """Report skills missing v0.1.4 governance fields + suggest defaults."""
     skills = _load_skills_from_directory(directory)
     if not skills:
         click.echo(f"No valid skill files in {directory}", err=True)
@@ -183,7 +183,7 @@ def governance_init(directory: Path):
         for name, missing in needs_migration:
             click.echo(f"  {name}: {', '.join(missing)}")
         click.echo()
-        click.echo("Run `score migrate <dir> --to 0.1.1 --apply` to add safe defaults.")
+        click.echo("Run `score migrate <dir> --to 0.1.4 --apply` to add safe defaults.")
 
 
 # ---------------------------------------------------------------------------
@@ -210,7 +210,7 @@ def verify_recording(path: Path):
 @cli.command()
 @click.argument("directory", type=click.Path(exists=True, file_okay=False, path_type=Path))
 @click.option("--to", "target_version", required=True,
-              help="Target Score spec version (currently only 0.1.1).")
+              help="Target Score spec version (currently only 0.1.4).")
 @click.option("--apply", "apply_changes", is_flag=True,
               help="Write changes to files. Without --apply, shows a dry-run.")
 @click.option("--skip-approved", is_flag=True,
@@ -218,7 +218,7 @@ def verify_recording(path: Path):
 def migrate(directory: Path, target_version: str, apply_changes: bool, skip_approved: bool):
     """Upgrade a skill library to a target Score spec version.
 
-    v0.1.1 adds four optional governance fields:
+    v0.1.4 adds four optional governance fields:
       approved_by, approved_at, review_due, classification
 
     This command adds SAFE DEFAULTS for fields that can be defaulted
@@ -227,9 +227,19 @@ def migrate(directory: Path, target_version: str, apply_changes: bool, skip_appr
     approved_at). It does not bump skill version numbers — that happens
     when a human approves the skill.
     """
-    if target_version != "0.1.1":
+    if target_version == "0.1.1":
+        click.echo(
+            "Error: migration target '0.1.1' is not supported.", err=True,
+        )
+        click.echo("Use '--to 0.1.4' instead.", err=True)
+        click.echo(
+            "Governance metadata was introduced in spec revision 0.1.4, not 0.1.1.",
+            err=True,
+        )
+        sys.exit(2)
+    if target_version != "0.1.4":
         click.echo(f"Unsupported target version: {target_version}", err=True)
-        click.echo("Supported: 0.1.1", err=True)
+        click.echo("Supported: 0.1.4", err=True)
         sys.exit(2)
 
     files = sorted(directory.glob("**/*.md"))
@@ -307,7 +317,7 @@ def migrate(directory: Path, target_version: str, apply_changes: bool, skip_appr
             failed.append((file_path.name, str(e)))
 
     click.echo()
-    click.secho(f"Migrated {len(applied)} skill files to Score v0.1.1.", fg="green")
+    click.secho(f"Migrated {len(applied)} skill files to Score v0.1.4.", fg="green")
     if failed:
         click.secho(f"Failed: {len(failed)}", fg="red")
         for name, err in failed:

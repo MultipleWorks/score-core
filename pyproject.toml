@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "score-core"
-version = "0.1.3"
+version = "0.1.4"
 description = "Core library for the Score portable AI knowledge format"
 readme = "README.md"
 license = {text = "MIT"}

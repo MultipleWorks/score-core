@@ -402,7 +402,7 @@ def _check_governance_warnings(payload: dict, warnings: list) -> None:
         warnings.append(_issue(
             "approved_by",
             "missing approved_by — required in Score v0.2 (governance). "
-            "Run `score migrate --to 0.1.1` to add the placeholder, then "
+            "Run `score migrate --to 0.1.4` to add the placeholder, then "
             "fill in the approver.",
         ))
 
