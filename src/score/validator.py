@@ -266,7 +266,8 @@ def validate_classification_combination(
             errors.append(
                 f"classification '{classification}' and access_classification "
                 f"'{access_classification}' is not a valid combination. "
-                f"See the Score governance metadata specification for valid pairs."
+                f"See score_governance_metadata_spec.md (bundled with score-core; "
+                f"also at github.com/multipleworks/score) for the six valid pairs."
             )
 
     return errors, warnings
@@ -402,7 +403,7 @@ def _check_governance_warnings(payload: dict, warnings: list) -> None:
         warnings.append(_issue(
             "approved_by",
             "missing approved_by — required in Score v0.2 (governance). "
-            "Run `score migrate --to 0.1.1` to add the placeholder, then "
+            "Run `score migrate --to 0.1.4` to add the placeholder, then "
             "fill in the approver.",
         ))
 

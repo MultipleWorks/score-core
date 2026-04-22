@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.1.4 — 2026-04-22
+
+### Breaking
+- Renamed migrate CLI target from `0.1.1` to `0.1.4`. The `0.1.1` label
+  was incorrect drafting; `0.1.4` is the actual spec revision that
+  introduced governance metadata fields. Passing `--to 0.1.1` now
+  raises a clear error directing users to `--to 0.1.4`.
+
+### Added
+- `docs/score_governance_metadata_spec.md` — bundled alongside the
+  Context API and Recording specs so the validator's R24 classification-
+  combination error message points at a file that actually ships with
+  the package. Previously the error referenced "the Score governance
+  metadata specification" without a locatable path; the spec lived only
+  in the public score repo.
+
+### Fixed
+- R24 error message now names the in-package path:
+  `docs/score_governance_metadata_spec.md`.
+- Body-text references to `v0.1.1` in the bundled governance spec
+  corrected to `v0.1.4` (matches the Score spec revision in which
+  governance metadata fields actually landed — previously a drafting
+  error in the spec doc).
+
+### Unchanged
+- Migration behaviour itself: still adds `approved_by`, `approved_at`,
+  `review_due`, `classification` with safe defaults.
+- R24 validation logic: six valid pairs + one warning pair unchanged.
+- Schema validation, Pydantic models, verify-recording CLI.
+
 ## 0.1.3 — April 2026
 
 Adds `"mcp"` to the `Interface` Literal in both `context_api.py` and

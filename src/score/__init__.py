@@ -27,7 +27,7 @@ directly rather than reaching into the submodules:
     )
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.4"
 
 from score.schema import (
     ACCESS_CLASSIFICATIONS,
