@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.5 — 2026-04-28
+
+### Fixed
+- Repaired malformed `pyproject.toml` where the `description` and
+  `readme` fields had been merged onto a single line, leaving the
+  package without a valid `readme` declaration on PyPI. PyPI 0.1.5
+  now ships with the updated description and the README rendered on
+  the package page.
+
+### Changed
+- Package description updated to "Python reference implementation of
+  the Score specification for AI skills" to match the repositioned
+  specification framing.
+
 ## 0.1.4 — 2026-04-22
 
 ### Breaking
