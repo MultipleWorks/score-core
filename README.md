@@ -110,6 +110,10 @@ Maestro is the commercial skill management product built on the Score format. Ma
 
 Current: **0.1.4** - supports Score format spec revision 0.1.4 including governance metadata fields.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to score-core.
+
 ## Licence
 
 MIT. See [LICENCE](LICENCE).
