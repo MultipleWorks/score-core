@@ -5,8 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "score-core"
 version = "0.1.4"
-description = "Core library for the Score portable AI knowledge format"
-readme = "README.md"
+description = "Python reference implementation of the Score specification for AI skills = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "MultipleWorks", email = "hello@multipleworks.com.hk"},
