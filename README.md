@@ -1,14 +1,12 @@
 # score-core
 
-Core library for the Score portable AI knowledge format.
+Python reference implementation of the Score specification for AI skills.
 
-Score is a human-readable, LLM-agnostic format for encoding organisational
-knowledge as portable skill files. `score-core` provides the schema, parser,
-serialiser, validator, library validator, Context API models, and Recording
-models that any Score-compatible tool needs.
+Score is a vendor-independent specification format for AI skills - skill files describe what an AI system should know, what it is allowed to do, and what governance applies, in a format that compiles to runtime targets like Anthropic Skills, MCP server configurations, and OpenAI tools. `score-core` provides the schema, parser, serialiser, validator, library validator, Context API models, and Recording models that any Score-compatible tool needs.
 
 Full format specification: [score_spec.md](https://github.com/multipleworks/score/blob/main/score_spec.md)
 Writing skills: [WRITING_SKILLS.md](https://github.com/multipleworks/score/blob/main/WRITING_SKILLS.md)
+Broader architecture: [multipleworks.com.hk/briefings](https://multipleworks.com.hk/briefings)
 
 ## Install
 
@@ -47,9 +45,9 @@ payload = {
 result = validate_skill(payload)
 if not result["valid"]:
     for error in result["errors"]:
-        print(f"error: {error['field']} — {error['message']}")
+        print(f"error: {error['field']} - {error['message']}")
 for warning in result["warnings"]:
-    print(f"warning: {warning['field']} — {warning['message']}")
+    print(f"warning: {warning['field']} - {warning['message']}")
 ```
 
 ### Work with the Pydantic model
@@ -72,12 +70,14 @@ report = validate_library(skills)
 print(report["summary"]["overall_health"])  # "good" | "warning" | "critical"
 ```
 
-### Migrate existing skills to v0.1.1
+### Migrate existing skills to the latest spec revision
 
 ```bash
-score migrate path/to/skills/ --to 0.1.1           # dry run
-score migrate path/to/skills/ --to 0.1.1 --apply   # write changes
+score migrate path/to/skills/ --to 0.1.4           # dry run
+score migrate path/to/skills/ --to 0.1.4 --apply   # write changes
 ```
+
+The `--to 0.1.4` target adds the governance metadata fields (`approved_by`, `approved_at`, `review_due`, `classification`) introduced in spec revision 0.1.4 with safe defaults.
 
 ## CLI commands
 
@@ -85,31 +85,30 @@ score migrate path/to/skills/ --to 0.1.1 --apply   # write changes
 |---------|---------|
 | `score validate <path>` | Validate a single file or directory |
 | `score library-check <dir>` | Full library report (overlaps, coverage) |
-| `score governance-init <dir>` | Report skills missing v0.1.1 governance fields |
+| `score governance-init <dir>` | Report skills missing v0.1.4 governance fields |
 | `score verify-recording <file>` | Verify Recording hash chain integrity |
-| `score migrate <dir> --to 0.1.1` | Add safe defaults for new spec fields |
+| `score migrate <dir> --to 0.1.4` | Add safe defaults for new spec fields |
 
 ## What's in the package
 
-- `score.schema` — Pydantic models (`SkillFile`, `UITheme`, `ExecutionHints`) and field constants
-- `score.parser` — `.md` → `Skill` (runtime dataclass) and `SkillFile` (Pydantic)
-- `score.serialiser` — `Skill` → `.md` with YAML frontmatter
-- `score.validator` — three-tier validation (errors, warnings, hints)
-- `score.library_validator` — cross-skill checks and fix proposal
-- `score.context_api` — request/response models for the Score Context API
-- `score.recording` — audit log entry models and hash chain utilities
-- `score.cli` — `score` command-line interface
+- `score.schema` - Pydantic models (`SkillFile`, `UITheme`, `ExecutionHints`) and field constants
+- `score.parser` - `.md` to `Skill` (runtime dataclass) and `SkillFile` (Pydantic)
+- `score.serialiser` - `Skill` to `.md` with YAML frontmatter
+- `score.validator` - three-tier validation (errors, warnings, hints)
+- `score.library_validator` - cross-skill checks and fix proposal
+- `score.context_api` - request/response models for the Score Context API
+- `score.recording` - audit log entry models and hash chain utilities
+- `score.cli` - `score` command-line interface
 
-## Relationship to Maestro
+## Relationship to Score and Maestro
 
-Maestro is the commercial skill management product built on the Score format.
-`score-core` is the shared library that Maestro and any other Score-compatible
-tool import. Maestro uses `score-core` internally; it is not a Maestro
-dependency.
+Score is the specification format. `score-core` is the Python reference implementation - the parser, validator, and supporting models that any Score-compatible tool can use.
+
+Maestro is the commercial skill management product built on the Score format. Maestro uses `score-core` internally as a library; `score-core` itself has no dependency on Maestro and runs standalone.
 
 ## Version
 
-Current: **0.1.0** — supports Score format v0.1.1 with governance metadata fields.
+Current: **0.1.4** - supports Score format spec revision 0.1.4 including governance metadata fields.
 
 ## Licence
 
